@@ -26,12 +26,12 @@ public class ImageAdapter extends BaseAdapter implements OnScrollListener{
 	private String[] imagesStrings=Images.imageThumbUrls;
 	private DownloadImage mDownloadImage;
 	 /** 
-     * “ª∆¡÷–µ⁄“ª∏ˆ 
+     * ‰∏ÄÂ±è‰∏≠Á¨¨‰∏Ä‰∏™ 
      */  
 	private int mFirstVisibleItem;  
     
     /** 
-     * “ª∆¡÷–À˘”–itemµƒ∏ˆ ˝ 
+     * ‰∏ÄÂ±è‰∏≠ÊâÄÊúâitemÁöÑ‰∏™Êï∞ 
      */  
     private int mVisibleItemCount;  
 	public ImageAdapter(GridView mGridView, Context context) {
@@ -63,16 +63,35 @@ public class ImageAdapter extends BaseAdapter implements OnScrollListener{
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		LinearLayout linear;
 		ImageView mImageView;  
-        final String mImageUrl = imagesStrings[position];  
-        if(convertView == null){  
-            mImageView = new ImageView(context);  
-        }else{  
-            mImageView = (ImageView) convertView;  
-        }         
-        mImageView.setLayoutParams(new GridView.LayoutParams(150, 150));  
-        mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);  
-        mImageView.setTag(mImageUrl);  
+	        final String mImageUrl = imagesStrings[position];  
+	        if(convertView == null){  
+	            linear=new LinearLayout(context);
+	        	//mImageView = new ImageView(context);  
+	        }else{  
+	            linear=(LinearLayout) convertView;
+	        	//mImageView = (ImageView) convertView;  
+	        }
+	        linear.removeAllViews();
+	        linear.setOrientation(LinearLayout.HORIZONTAL);
+	        linear.setLayoutParams(new GridView.LayoutParams(mWidth/2,mWidth/2));
+	        mImageView = new ImageView(context); 
+	        linear.addView(mImageView);
+	        mImageView.setLayoutParams(new LinearLayout.LayoutParams(-1, -1));  
+	        mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);  
+	        mImageView.setTag(mImageUrl);  
+			Bitmap bitmap=mDownloadImage.getFromCache(mImageUrl.replaceAll("[^\\w]", ""));
+			ImageView mImageView;  
+	        final String mImageUrl = imagesStrings[position];  
+	        if(convertView == null){  
+	            mImageView = new ImageView(context);  
+	        }else{  
+	            mImageView = (ImageView) convertView;  
+	        }         
+	        mImageView.setLayoutParams(new GridView.LayoutParams(150, 150));  
+	        mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);  
+	        mImageView.setTag(mImageUrl);  
 		Bitmap bitmap=mDownloadImage.getFromCache(mImageUrl.replaceAll("[^\\w]", ""));
 		mImageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.home_bg2));
 		if(bitmap!=null){
@@ -80,8 +99,8 @@ public class ImageAdapter extends BaseAdapter implements OnScrollListener{
 		}else{
 			mImageView.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.home_bg2));
 		}
-		System.out.println("grt");
-		return mImageView;
+	
+		return linear;
 	}
 
 	@Override
